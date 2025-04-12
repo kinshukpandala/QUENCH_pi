@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About - QUENCH</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+</head>
+<body>
+  <header>
+    <h2>About QUENCH</h2>
+    <div class="header-right">
+      <button id="themeToggle">🌓</button>
+      <a href="{{ url_for('home') }}"><button>🏠 Home</button></a>
+    </div>
+  </header>
+
+  <main>
+    <section class="card">
+      <h3>What is QUENCH?</h3>
+      <p><strong>QUENCH</strong> is a smart IoT-based water dispensing system that uses real-time UPI payment verification, sensor integration, and dashboard analytics to deliver water efficiently. Built by engineers, for the future 💧</p>
+    </section>
+  </main>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

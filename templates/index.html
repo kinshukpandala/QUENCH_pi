@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>QUENCH Web App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+</head>
+<body class="fade-in">
+    <header>
+        <h2>The Dashboard (⌐■_■)</h2>
+        <div class="header-right">
+            <button id="themeToggle">🌓</button>
+            <a href="{{ url_for('about') }}"><button>About</button></a>
+        </div>
+    </header>
+
+    <main>
+        <section class="column left">
+            <div class="card">
+                <h2>Admin Details</h2>
+                <p>Name: Kinshuk Pandala</p>
+                <p>Phone no: +91 9448858537</p>
+                <p>Email: kinshuk2005@gmail.com</p>
+                <p>UPI ID: kinshuk2005@okhdfcbank</p>
+            </div>
+
+            <div class="card">
+                <h2>Log Monitor</h2>
+                <ul>
+                    <li>Txn #1 – ₹10</li>
+                    <li>Txn #2 – ₹20</li>
+                    <li>Txn #3 – ₹50</li>
+                </ul>
+                <button>View All</button>
+            </div>
+
+            <div class="card">
+                <div class="water-level">
+                    <span class="drop">💧</span>
+                    <span>45%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 45%;"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="column middle">
+            <div class="card stats">
+                <h2>Live Stats</h2>
+                <div class="stats-grid">
+                    <div>Transactions: <strong>23</strong></div>
+                    <div>Sensor Status: <strong>All Working</strong></div>
+                    <div>Revenue: <strong>₹800</strong></div>
+                    <div>Dispensed: <strong>12L</strong></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Analytics</h2>
+                <div class="analytics-filter">
+                    <button class="filter-btn active" data-range="1D">1D</button>
+                    <button class="filter-btn" data-range="3D">3D</button>
+                    <button class="filter-btn" data-range="5D">5D</button>
+                    <button class="filter-btn" data-range="7D">7D</button>
+                    <button class="filter-btn" data-range="9D">9D</button>
+                </div>
+                <div class="analytics-chart">
+                    <canvas id="analyticsChart" height="120"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="column right">
+            <div class="card center-text">
+                <strong id="datetime"></strong>
+            </div>
+            <div class="card center-text">
+                <strong> Rail Lab 004</strong>
+            </div>
+
+            <div class="card system-health">
+              <h2>System Health Check</h2>
+              <ul>
+                <li>CPU Usage: <strong id="cpuUsage">--%</strong></li>
+                <li>Temperature: <strong id="temperature">--°C</strong></li>
+                <li>Wi-Fi Signal: <strong id="wifiStrength">--</strong></li>
+                <li>ESP32 Status: <strong id="espStatus">Checking...</strong></li>
+              </ul>
+            </div>
+        </section>
+    </main>
+
+    <div id="aboutModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>About QUENCH</h2>
+            <p><strong>QUENCH</strong> is a smart IoT-based water dispensing system with real-time UPI transaction verification and analytics. Built by engineers for a smarter future 💧</p>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
