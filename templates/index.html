@@ -38,10 +38,10 @@
             <div class="card">
                 <div class="water-level">
                     <span class="drop">💧</span>
-                    <span>45%</span>
+                    <span>30%</span>
                 </div>
                 <div class="progress-bar">
-                    <div class="progress" style="width: 45%;"></div>
+                    <div class="progress" style="width: 30%;"></div>
                 </div>
             </div>
         </section>
@@ -81,14 +81,20 @@
             </div>
 
             <div class="card system-health">
-              <h2>System Health Check</h2>
-              <ul>
-                <li>CPU Usage: <strong id="cpuUsage">--%</strong></li>
-                <li>Temperature: <strong id="temperature">--°C</strong></li>
-                <li>Wi-Fi Signal: <strong id="wifiStrength">--</strong></li>
-                <li>ESP32 Status: <strong id="espStatus">Checking...</strong></li>
-              </ul>
-            </div>
+                <h2>System Stats</h2>
+                <ul>
+                  <li><strong>ESP32 Status:</strong> <span id="espStatus" style="color: yellow;">Checking...</span></li>
+                  <li><strong>Wi-Fi Signal:</strong> <span id="wifiStrength">--</span></li>
+                  <li><strong>Raspi Temp:</strong> <span id="temperature">-- °C</span></li>
+                </ul> 
+                <div class="subsection">
+                  <h4>Memory Usage</h4>
+                  <div class="progress-bar">
+                    <div class="progress" id="memUsageBar" style="width: 0%; background-color: #00c853;"></div>
+                  </div>
+                  <small><span id="memUsed">--</span> / <span id="memTotal">--</span> GB</small>
+                </div>
+              </div>
         </section>
     </main>
 

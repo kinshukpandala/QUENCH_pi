@@ -1,8 +1,16 @@
 from flask import Flask, render_template, jsonify
 import psutil
 import subprocess
+import serial.tools.list_ports
 
 app = Flask(__name__)
+
+def is_serial_connected():
+    ports = serial.tools.list_ports.comports()
+    for port in ports:
+        if "USB" in port.device or "ttyUSB" in port.device:
+            return True
+    return False
 
 @app.route("/")
 def home():
@@ -14,22 +22,32 @@ def about():
 
 @app.route("/system")
 def get_pi_mri():
-    cpu_usage = psutil.cpu_percent(interval=1)
-    temperature = psutil.sensors_temperatures().get('cpu_thermal', [])[0].current if psutil.sensors_temperatures() else "N/A"
-    wifi_strength = subprocess.check_output("iwconfig wlan0 | grep 'Signal level'", shell=True).decode('utf-8').strip()
-    
-    # For the ESP32, you would need to check its status using serial communication or API request
-    esp_status = "Connected"  # You can change this based on actual ESP32 status (for example, check if connected)
+    try:
+        mem = psutil.virtual_memory()
+        temperature = psutil.sensors_temperatures().get('cpu_thermal', [])[0].current if psutil.sensors_temperatures() else "N/A"
 
-    health_data = {
-        "cpu_usage": cpu_usage,
-        "temperature": temperature,
-        "wifi_strength": wifi_strength,
-        "esp_status": esp_status
-    }
+        # Wi-Fi signal strength
+        try:
+            wifi_info = subprocess.check_output("iwconfig wlan0 | grep 'Signal level'", shell=True).decode('utf-8').strip()
+        except subprocess.CalledProcessError:
+            wifi_info = "Unavailable"
+
+        esp_status = "Connected" if is_serial_connected() else "Disconnected"
+
+        # Format the health data (removed hostname, platform, and architecture)
+        health_data = {
+            "wifi_strength": wifi_info,
+            "esp_status": esp_status, 
+            "cpu_temperature": temperature,
+            "memory_used": round(mem.used / (1024 ** 3), 2),
+            "memory_total": round(mem.total / (1024 ** 3), 2),
+        }
+
+    except Exception as e:
+        health_data = {"error": str(e)}
 
     return jsonify(health_data)
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
-
+if __name__ == '__main__':
+    app.run()
+    

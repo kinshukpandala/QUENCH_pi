@@ -81,144 +81,144 @@ function generateDummyData(range) {
 }
 
 function updateAnalyticsChart(data) {
-  const labels = data.map(d => d.date);
-  const revenueData = data.map(d => d.revenue);
-  const volumeData = data.map(d => d.volume);
+    const labels = data.map(d => d.date);
+    const revenueData = data.map(d => d.revenue);
+    const volumeData = data.map(d => d.volume);
 
-  if (analyticsChart) {
-      analyticsChart.destroy();
-  }
+    if (analyticsChart) {
+        analyticsChart.destroy();
+    }
 
-  analyticsChart = new Chart(analyticsChartCanvas, {
-      type: 'bar',
-      data: {
-          labels: labels,
-          datasets: [
-              {
-                  label: 'Revenue (₹)',
-                  data: revenueData,
-                  backgroundColor: 'rgba(128, 0, 255, 0.7)',
-                  borderColor: 'rgba(128, 0, 255, 1)',
-                  borderWidth: 1,
-                  yAxisID: 'y-revenue',
-                  barThickness: 15,
-                  categoryPercentage: 0.7,
-                  barPercentage: 0.45
-              },
-              {
-                  label: 'Water Dispensed (Liters)',
-                  data: volumeData,
-                  backgroundColor: 'rgba(0, 199, 162, 0.7)',
-                  borderColor: 'rgba(0, 199, 162, 1)',
-                  borderWidth: 1,
-                  yAxisID: 'y-volume',
-                  barThickness: 15,
-                  categoryPercentage: 0.7,
-                  barPercentage: 0.45
-              }
-          ]
-      },
-      options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: {
-              'y-revenue': {
-                  type: 'linear',
-                  position: 'left',
-                  beginAtZero: true,
-                  title: {
-                      display: true,
-                      text: 'Revenue (₹)',
-                      font: {
-                          size: 12
-                      }
-                  },
-                  ticks: {
-                      font: {
-                          size: 10
-                      }
-                  }
-              },
-              'y-volume': {
-                  type: 'linear',
-                  position: 'right',
-                  beginAtZero: true,
-                  title: {
-                      display: true,
-                      text: 'Water Dispensed (Liters)',
-                      font: {
-                          size: 12
-                      }
-                  },
-                  grid: {
-                      drawOnChartArea: false
-                  },
-                  ticks: {
-                      callback: function(value) {
-                          return value + 'L';
-                      },
-                      font: {
-                          size: 10
-                      }
-                  }
-              },
-              x: {
-                  grid: {
-                      display: false
-                  },
-                  ticks: {
-                      font: {
-                          size: 10
-                      },
-                      align: 'center'
-                  }
-              }
-          },
-          plugins: {
-              legend: {
-                  position: 'top',
-                  align: 'center',
-                  labels: {
-                      font: {
-                          size: 11
-                      }
-                  }
-              },
-              tooltip: {
-                  callbacks: {
-                      label: function(context) {
-                          let label = context.dataset.label || '';
-                          if (context.parsed.y !== null) {
-                              label += ': ' + context.parsed.y;
-                              if (context.dataset.yAxisID === 'y-volume') {
-                                  label += 'L';
-                              }
-                          }
-                          return label;
-                      },
-                      titleFont: {
-                          size: 12
-                      },
-                      bodyFont: {
-                          size: 11
-                      }
-                  }
-              }
-          },
-          layout: {
-              padding: {
-                  left: 20,
-                  right: 20
-              }
-          }
-      }
-  });
+    analyticsChart = new Chart(analyticsChartCanvas, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Revenue (₹)',
+                    data: revenueData,
+                    backgroundColor: 'rgba(128, 0, 255, 0.7)',
+                    borderColor: 'rgba(128, 0, 255, 1)',
+                    borderWidth: 1,
+                    yAxisID: 'y-revenue',
+                    barThickness: 15,
+                    categoryPercentage: 0.7,
+                    barPercentage: 0.45
+                },
+                {
+                    label: 'Water Dispensed (Liters)',
+                    data: volumeData,
+                    backgroundColor: 'rgba(0, 199, 162, 0.7)',
+                    borderColor: 'rgba(0, 199, 162, 1)',
+                    borderWidth: 1,
+                    yAxisID: 'y-volume',
+                    barThickness: 15,
+                    categoryPercentage: 0.7,
+                    barPercentage: 0.45
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                'y-revenue': {
+                    type: 'linear',
+                    position: 'left',
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Revenue (₹)',
+                        font: {
+                            size: 12
+                        }
+                    },
+                    ticks: {
+                        font: {
+                            size: 10
+                        }
+                    }
+                },
+                'y-volume': {
+                    type: 'linear',
+                    position: 'right',
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Water Dispensed (Liters)',
+                        font: {
+                            size: 12
+                        }
+                    },
+                    grid: {
+                        drawOnChartArea: false
+                    },
+                    ticks: {
+                        callback: function (value) {
+                            return value + 'L';
+                        },
+                        font: {
+                            size: 10
+                        }
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        font: {
+                            size: 10
+                        },
+                        align: 'center'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'top',
+                    align: 'center',
+                    labels: {
+                        font: {
+                            size: 11
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function (context) {
+                            let label = context.dataset.label || '';
+                            if (context.parsed.y !== null) {
+                                label += ': ' + context.parsed.y;
+                                if (context.dataset.yAxisID === 'y-volume') {
+                                    label += 'L';
+                                }
+                            }
+                            return label;
+                        },
+                        titleFont: {
+                            size: 12
+                        },
+                        bodyFont: {
+                            size: 11
+                        }
+                    }
+                }
+            },
+            layout: {
+                padding: {
+                    left: 20,
+                    right: 20
+                }
+            }
+        }
+    });
 }
 
 updateAnalyticsChart(generateDummyData(currentRange));
 
 filterButtons.forEach(button => {
-    button.addEventListener('click', function() {
+    button.addEventListener('click', function () {
         const range = this.getAttribute('data-range');
         if (range !== currentRange) {
             currentRange = range;
@@ -231,81 +231,29 @@ filterButtons.forEach(button => {
 });
 
 // Function to fetch system health data from the server
-function updateSystemHealth() {
-    fetch('/system')
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById("cpuUsage").textContent = data.cpu_usage + "%";
-            document.getElementById("temperature").textContent = data.temperature + "°C";
-            document.getElementById("wifiStrength").textContent = data.wifi_strength;
-            document.getElementById("espStatus").textContent = data.esp_status;
-        })
-        .catch(error => console.error('Error fetching system health data:', error));
+async function updateSystemHealth() {
+    try {
+        const res = await fetch("/system");
+        const data = await res.json();
+
+        document.getElementById("espStatus").textContent = data.esp_status;
+        document.getElementById("espStatus").style.color = data.esp_status === "Connected" ? "lime" : "red";
+        document.getElementById("wifiStrength").textContent = data.wifi_strength;
+        document.getElementById("temperature").textContent = `${data.cpu_temperature} °C`;
+
+        const memPercent = (data.memory_used / data.memory_total) * 100;
+        document.getElementById("memUsageBar").style.width = `${memPercent}%`;
+        document.getElementById("memUsed").textContent = data.memory_used;
+        document.getElementById("memTotal").textContent = data.memory_total;
+
+    } catch (err) {
+        console.error("Health fetch error:", err);
+    }
 }
 
-// Update system health every 5 seconds
-setInterval(updateSystemHealth, 5000);
-
-// Also run it once immediately to populate the data on page load
-updateSystemHealth();
+setInterval(updateSystemHealth, 1000); // Refresh every 1s
+updateSystemHealth(); // Initial load
 
 // ====================
 // 🚰 WATER LEVEL TRACKER
 // ====================
-const TOTAL_CAPACITY = 20; // Liters
-let remainingVolume = TOTAL_CAPACITY;
-let alertSent = false;
-
-function handleTransaction(volumeDispensed) {
-    remainingVolume -= volumeDispensed;
-    const percent = (remainingVolume / TOTAL_CAPACITY) * 100;
-    updateProgressBar(percent);
-
-    if (percent <= 30 && !alertSent) {
-        sendSMSAlert();
-        alertSent = true;
-    }
-}
-
-function updateProgressBar(percent) {
-    const bar = document.getElementById("waterLevelBar");
-    if (bar) {
-        bar.style.width = percent + "%";
-        bar.textContent = Math.round(percent) + "%";
-
-        if (percent <= 30) {
-            bar.classList.add("bg-red-500");
-            bar.classList.remove("bg-green-500");
-        } else {
-            bar.classList.add("bg-green-500");
-            bar.classList.remove("bg-red-500");
-        }
-    }
-}
-
-function resetTank() {
-    remainingVolume = TOTAL_CAPACITY;
-    alertSent = false;
-    updateProgressBar(100);
-}
-
-// Dummy function for sending SMS (replace with actual API)
-function sendSMSAlert() {
-    fetch("https://www.fast2sms.com/dev/bulkV2", {
-        method: "POST",
-        headers: {
-            "authorization": "7LpRyaYJud6ibMfi63lR1WhOXGUw80SPcffw5pJKHil0hQmVRSYIRnuFSHOA",
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: new URLSearchParams({
-            sender_id: "QUENCH",
-            message: "⚠️ QUENCH ALERT: Water below 30%! Please refill the tank.",
-            language: "english",
-            route: "q",
-            numbers: "9448858537"
-        })
-    })
-    .then(res => res.text())
-    .then(data => console.log("SMS sent:", data))
-    .catch(err => console.error("SMS error:", err));
-}
