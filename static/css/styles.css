@@ -288,39 +288,3 @@
     border-radius: 5px;
     transition: width 0.3s ease;
   }
-
-  /* Footer Styling - Only on About Page */
-.about-page .footer {
-  background-color: #333;
-  color: white;
-  padding: 20px;
-  text-align: center;
-  position: relative;
-  bottom: 0;
-  width: 100%;
-}
-
-.about-page .footer a {
-  color: white;
-  text-decoration: none;
-  margin: 0 10px;
-}
-
-.about-page .footer a:hover {
-  text-decoration: underline;
-}
-
-.about-page .footer ul {
-  list-style: none;
-  padding: 0;
-}
-
-.about-page .footer ul li {
-  display: inline;
-  margin: 0 15px;
-}
-
-/* Footer NOT visible on other pages (by default) */
-.footer {
-  display: none;  /* Hide footer on all other pages */
-}
