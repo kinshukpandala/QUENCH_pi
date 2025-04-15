@@ -4,4 +4,4 @@ This is the web dashboard for the QUENCH smart water dispenser. Built using HTML
 
 Its backed by python(Flask)
 
-built with <3 by pandala
+built with <3 by panda
