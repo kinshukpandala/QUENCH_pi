@@ -1,7 +1,10 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request, make_response, redirect
 import psutil
 import subprocess
 import serial.tools.list_ports
+
+app.secret_key = 'hello_my_flag_is_water' 
+ADMIN_COOKIE_VALUE = 'admin-xyz-9876-token'
 
 app = Flask(__name__)
 
@@ -47,6 +50,36 @@ def get_pi_mri():
         health_data = {"error": str(e)}
 
     return jsonify(health_data)
+
+# Step 1: Route to set the admin cookie
+@app.route('/activatenfc')
+def set_admin_cookie():
+    resp = make_response(render_template('login_success.html'))  # This page tells the admin the cookie is set
+    resp.set_cookie(
+        'auth_token',  # Cookie name
+        ADMIN_COOKIE_VALUE,  # Your unique admin token
+        max_age=60*60*24*30,  # Cookie expires in 30 days
+        secure=True,  # Only sent over HTTPS
+        httponly=True,  # JavaScript can't read this cookie
+        samesite='Strict'  # Sent only in first-party context
+    )
+    return resp
+
+# Step 2: Protect the admin route with the cookie check
+@app.route('/admin')
+def admin_panel():
+    token = request.cookies.get('auth_token')  # Get the cookie from the request
+    if token == ADMIN_COOKIE_VALUE:  # If the cookie matches the secret admin value
+        return render_template("index.html")  # Show the admin panel
+    else:
+        return render_template("access_denied.html"), 403  # Show access denied
+
+# Step 3: Optional route to log out and clear the cookie
+@app.route('/deactiveate_nfc')
+def logout_admin():
+    resp = make_response("You are now logged out.")
+    resp.set_cookie("auth_token", '', expires=0)  # Remove the cookie
+    return resp
 
 if __name__ == '__main__':
     app.run()
