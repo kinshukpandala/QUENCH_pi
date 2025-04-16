@@ -1,13 +1,15 @@
-from flask import Flask, render_template, jsonify, request, make_response, redirect
+from flask import Flask, render_template, jsonify, request, make_response
 import psutil
 import subprocess
 import serial.tools.list_ports
 
-app.secret_key = 'hello_my_flag_is_water' 
+app = Flask(__name__)
+app.secret_key = 'hello_my_flag_is_water'
+
+# Your admin cookie secret value
 ADMIN_COOKIE_VALUE = 'admin-xyz-9876-token'
 
-app = Flask(__name__)
-
+# Checks if ESP32 is connected via serial
 def is_serial_connected():
     ports = serial.tools.list_ports.comports()
     for port in ports:
@@ -15,13 +17,15 @@ def is_serial_connected():
             return True
     return False
 
+# ---------- Main Routes ---------- #
+
 @app.route("/")
 def home():
-    return render_template("index.html")
+    return render_template("index.html")  # Your landing page
 
 @app.route("/about")
 def about():
-    return render_template("about.html")
+    return render_template("about.html")  # Your about page
 
 @app.route("/system")
 def get_pi_mri():
@@ -29,7 +33,6 @@ def get_pi_mri():
         mem = psutil.virtual_memory()
         temperature = psutil.sensors_temperatures().get('cpu_thermal', [])[0].current if psutil.sensors_temperatures() else "N/A"
 
-        # Wi-Fi signal strength
         try:
             wifi_info = subprocess.check_output("iwconfig wlan0 | grep 'Signal level'", shell=True).decode('utf-8').strip()
         except subprocess.CalledProcessError:
@@ -37,10 +40,9 @@ def get_pi_mri():
 
         esp_status = "Connected" if is_serial_connected() else "Disconnected"
 
-        # Format the health data (removed hostname, platform, and architecture)
         health_data = {
             "wifi_strength": wifi_info,
-            "esp_status": esp_status, 
+            "esp_status": esp_status,
             "cpu_temperature": temperature,
             "memory_used": round(mem.used / (1024 ** 3), 2),
             "memory_total": round(mem.total / (1024 ** 3), 2),
@@ -51,36 +53,47 @@ def get_pi_mri():
 
     return jsonify(health_data)
 
-# Step 1: Route to set the admin cookie
+# ---------- Authentication System ---------- #
+
+#Visit this once to set the admin cookie (manually, not via NFC)
 @app.route('/activatenfc')
 def set_admin_cookie():
-    resp = make_response(render_template('login_success.html'))  # This page tells the admin the cookie is set
+    resp = make_response(render_template('login_success.html'))  # Show success
     resp.set_cookie(
-        'auth_token',  # Cookie name
-        ADMIN_COOKIE_VALUE,  # Your unique admin token
-        max_age=60*60*24*30,  # Cookie expires in 30 days
-        secure=True,  # Only sent over HTTPS
-        httponly=True,  # JavaScript can't read this cookie
-        samesite='Strict'  # Sent only in first-party context
+        'auth_token',
+        ADMIN_COOKIE_VALUE,
+        max_age=60*60*24*30,  # 30 days
+        secure=True,          # ✅ Required for HTTPS
+        httponly=True,
+        samesite='Lax'        # ✅ Allows cookie via NFC tap and link
     )
     return resp
 
-# Step 2: Protect the admin route with the cookie check
+#This is what your NFC tag points to URL: https://iot.thequench.shop/admin
 @app.route('/admin')
 def admin_panel():
-    token = request.cookies.get('auth_token')  # Get the cookie from the request
-    if token == ADMIN_COOKIE_VALUE:  # If the cookie matches the secret admin value
-        return render_template("index.html")  # Show the admin panel
+    token = request.cookies.get('auth_token')
+    if token == ADMIN_COOKIE_VALUE:
+        return render_template("index.html")  # Authenticated view
     else:
-        return render_template("access_denied.html"), 403  # Show access denied
+        return render_template("access_denied.html"), 403  # Denied
 
-# Step 3: Optional route to log out and clear the cookie
-@app.route('/deactiveate_nfc')
+# Optional: Visit site to Logout and clear the admin cookie
+@app.route('/deactivate_nfc')
 def logout_admin():
     resp = make_response("You are now logged out.")
-    resp.set_cookie("auth_token", '', expires=0)  # Remove the cookie
+    resp.set_cookie("auth_token", '', expires=0)
     return resp
 
+# Visit Site for debugging route to test cookie presence 
+@app.route('/check-auth')
+def check_auth():
+    token = request.cookies.get('auth_token')
+    if token == ADMIN_COOKIE_VALUE:
+        return "✅ Authenticated"
+    else:
+        return "❌ Not Authenticated"
+
+# ---------- Run the Flask App on localhost port 5000 hosting via cloudflared---------- #
 if __name__ == '__main__':
     app.run()
-    
