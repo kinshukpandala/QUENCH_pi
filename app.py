@@ -63,9 +63,9 @@ def set_admin_cookie():
         'auth_token',
         ADMIN_COOKIE_VALUE,
         max_age=60*60*24*30,  # 30 days
-        secure=True,          # ✅ Required for HTTPS
+        secure=True,          # Required for HTTPS
         httponly=True,
-        samesite='Lax'        # ✅ Allows cookie via NFC tap and link
+        samesite='Lax'        # Allows cookie via NFC tap and link
     )
     return resp
 
