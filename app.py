@@ -17,7 +17,7 @@ def is_serial_connected():
             return True
     return False
 
-# ---------- Main Routes ---------- #
+# ---------- Main Frame Routes ---------- #
 
 @app.route("/")
 def home():
@@ -53,7 +53,7 @@ def get_pi_mri():
 
     return jsonify(health_data)
 
-# ---------- Authentication System ---------- #
+# ---------- The Auth Protocol ---------- #
 
 #Visit this once to set the admin cookie (manually, not via NFC)
 @app.route('/activatenfc')
