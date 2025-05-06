@@ -4,7 +4,7 @@ import subprocess
 import serial.tools.list_ports
 
 app = Flask(__name__)
-app.secret_key = 'hello_my_flag_is_water'
+app.secret_key = 'h3110_my_f14g_i5_w0r1d'
 
 # Your admin cookie secret value
 ADMIN_COOKIE_VALUE = 'admin-xyz-9876-token'
