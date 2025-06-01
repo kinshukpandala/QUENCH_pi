@@ -1,7 +1,11 @@
 # QUENCH Dashboard 💧
 
-This is the web dashboard for the QUENCH smart water dispenser. Built using HTML/CSS/JS and runs on a Raspberry Pi.
+The basic layout of a dashboard for quench 
 
-Its backed by python(Flask)
+prolly a wip still now 
 
-built with <3 by panda
+was graded S for this project 
+
+built with <3 by a panda a really smart one
+
+its backed by a flask (python)
